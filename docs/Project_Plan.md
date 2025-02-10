@@ -1,3 +1,5 @@
+```markdown
+
 ## Project Plan - Snake Game
 
 ### Milestones and Timeline
