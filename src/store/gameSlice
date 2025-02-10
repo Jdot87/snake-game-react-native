@@ -1,1 +1,49 @@
+import { createSlice } from '@reduxjs/toolkit';
+import { moveSnake, checkCollision, checkFoodCollision, INITIAL_SNAKE, INITIAL_FOOD } from '../gameLogic/snake';
+
+const initialState = {
+    snake: INITIAL_SNAKE,
+    direction: "RIGHT",
+    food: INITIAL_FOOD,
+    score: 0,
+    isGameOver: false
+};
+
+const gameSlice = createSlice({
+    name: 'game',
+    initialState,
+    reducers: {
+        changeDirection: (state, action) => {
+            state.direction = action.payload;
+        },
+        updateGame: (state) => {
+            if (state.isGameOver) return;
+
+            let newSnake = moveSnake(state.snake, state.direction);
+
+            if (checkCollision(newSnake)) {
+                state.isGameOver = true;
+                return;
+            }
+
+            if (checkFoodCollision(newSnake, state.food)) {
+                newSnake.push({});
+                state.food = { x: Math.floor(Math.random() * 20), y: Math.floor(Math.random() * 20) };
+                state.score += 10;
+            }
+
+            state.snake = newSnake;
+        },
+        resetGame: (state) => {
+            state.snake = INITIAL_SNAKE;
+            state.direction = "RIGHT";
+            state.food = INITIAL_FOOD;
+            state.score = 0;
+            state.isGameOver = false;
+        }
+    }
+});
+
+export const { changeDirection, updateGame, resetGame } = gameSlice.actions;
+export default gameSlice.reducer;
 
