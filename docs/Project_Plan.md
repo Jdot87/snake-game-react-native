@@ -1,7 +1,7 @@
 ```markdown
-# Project Plan - Snake Game
+ Project Plan - Snake Game
 
-## Milestones and Timeline
+ Milestones and Timeline
 
 ### **Phase 1: Setup & Planning (Week 1)**
 - [x] Set up GitHub repository and folder structure
