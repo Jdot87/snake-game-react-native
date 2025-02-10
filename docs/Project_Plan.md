@@ -1,12 +1,12 @@
 
  Project Plan - Snake Game
 
- Milestones and Timeline
+### Milestones and Timeline
 
 ### **Phase 1: Setup & Planning (Week 1)**
-- [x] Set up GitHub repository and folder structure
-- [x] Define project requirements
-- [x] Install dependencies (React Native, Redux, Firebase)
+- [ ] Set up GitHub repository and folder structure
+- [ ] Define project requirements
+- [ ] Install dependencies (React Native, Redux, Firebase)
 
 ### **Phase 2: Core Game Mechanics (Week 2-3)**
 - [ ] Implement Snake movement logic
