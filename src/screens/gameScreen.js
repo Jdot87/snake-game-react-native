@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Alert } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import GameOver from "./gameOver"; // Import the GameOver component
 
 const GRID_SIZE = 10; // 10x10 Grid
 const INITIAL_SNAKE = [{ x: 5, y: 5 }];
@@ -70,6 +71,11 @@ const GameScreen = () => {
         setGameOver(false); // Reset game over state
     };
 
+    // Function to handle quitting the game
+    const quitGame = () => {
+        console.log("Game Exited");
+    };
+
     return (
         <View style={styles.container}>
             {/* Display game title */}
@@ -79,14 +85,7 @@ const GameScreen = () => {
             <Text style={styles.score}>Score: {score}</Text>
 
             {/* Game over screen */}
-            {gameOver && (
-                <View style={styles.gameOverScreen}>
-                    <Text style={styles.gameOverText}>Game Over</Text>
-                    <TouchableOpacity style={styles.button} onPress={restartGame}>
-                        <Text style={styles.buttonText}>Restart</Text>
-                    </TouchableOpacity>
-                </View>
-            )}
+            {gameOver && <GameOver score={score} onRestart={restartGame} onQuit={quitGame} />}
 
             {/* Game board where the snake and food are displayed */}
             {!gameOver && (
@@ -135,10 +134,10 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "green", 
+        backgroundColor: "green", // Green background
     },
     title: {
-        fontSize: 24,
+        fontSize: 30,
         fontWeight: "bold",
         color: "white",
     },
@@ -189,22 +188,6 @@ const styles = StyleSheet.create({
         fontSize: 20,
         color: "white",
         fontWeight: "bold",
-    },
-    gameOverScreen: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        backgroundColor: 'rgba(0, 0, 0, 0.8)',
-        justifyContent: 'center',
-        alignItems: 'center',
-        zIndex: 1,
-    },
-    gameOverText: {
-        fontSize: 30,
-        color: "white",
-        marginBottom: 20,
     },
 });
 
