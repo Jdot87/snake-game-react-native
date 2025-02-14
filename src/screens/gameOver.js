@@ -1,8 +1,17 @@
 import React from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, Alert } from "react-native";
 
 // GameOver component
 const GameOver = ({ score, onRestart, onQuit }) => {
+
+    // Function to handle Quit button with confirmation alert
+    const handleQuit = () => {
+        Alert.alert("Quit Game", "Are you sure you want to quit?", [
+            { text: "Cancel", style: "cancel" }, // Option to cancel
+            { text: "Yes", onPress: onQuit }, // Confirm quit, executes onQuit function
+        ]);
+    };
+
     return (
         <View style={styles.gameOverScreen}>
             {/* Display Game Over message */}
@@ -16,8 +25,8 @@ const GameOver = ({ score, onRestart, onQuit }) => {
                 <Text style={styles.buttonText}>RESTART</Text>
             </TouchableOpacity>
 
-            {/* Quit Button */}
-            <TouchableOpacity style={styles.button} onPress={onQuit}>
+            {/* Quit Button with confirmation alert */}
+            <TouchableOpacity style={styles.button} onPress={handleQuit}>
                 <Text style={styles.buttonText}>QUIT</Text>
             </TouchableOpacity>
         </View>
