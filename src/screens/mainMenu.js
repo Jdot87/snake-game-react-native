@@ -1,66 +1,95 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Alert } from "react-native";
 
-// MainMenu component that serves as the game's main menu screen
 const MainMenu = ({ navigation }) => {
-    
+    // State to manage the current color index for the title
+    const [colorIndex, setColorIndex] = useState(0);
+    // Array of colors to cycle through for the title
+    const colors = ["pink", "yellow", "white","#1E90FF"];
+
+    // State to manage which button is highlighted
+    const [highlightedButton, setHighlightedButton] = useState("PLAY");
+
     // Function to handle the Quit button
     const handleQuit = () => {
-        Alert.alert(
-            "Quit Game", 
-            "Are you sure you want to quit?", 
-            [
-                { text: "Cancel", style: "cancel" }, // Cancel option to dismiss alert
-                { text: "Yes", onPress: () => console.log("Game Exited") }, // Confirm exit action
-            ]
-        );
+        Alert.alert("Quit Game", "Are you sure you want to quit?", [
+            { text: "Cancel", style: "cancel" },
+            { text: "Yes", onPress: () => console.log("Game Exited") },
+        ]);
     };
+
+    // Effect to cycle through the colors for the title at regular intervals
+    useEffect(() => {
+        const colorInterval = setInterval(() => {
+            setColorIndex((prevIndex) => (prevIndex + 1) % colors.length);
+        }, 200); // Change the interval duration as needed (200ms for quick flashing)
+
+        // Clean up the interval on component unmount
+        return () => clearInterval(colorInterval);
+    }, []);
+
+    // Effect to toggle the highlighted button at regular intervals
+    useEffect(() => {
+        const buttonInterval = setInterval(() => {
+            setHighlightedButton((prev) => (prev === "PLAY" ? "QUIT" : "PLAY"));
+        }, 400); // Change the interval duration as needed (400ms for button flashing)
+
+        // Clean up the interval on component unmount
+        return () => clearInterval(buttonInterval);
+    }, []);
 
     return (
         <View style={styles.container}>
-            {/* Display game title */}
-            <Text style={styles.title}>Snake Game</Text>
-            
-            {/* Button to start the game, navigates to the Game screen */}
-            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Game")}>
-                <Text style={styles.buttonText}>PLAY</Text>
-            </TouchableOpacity>
-
-            {/* Button to quit the game, triggers confirmation alert */}
-            <TouchableOpacity style={styles.button} onPress={handleQuit}>
-                <Text style={styles.buttonText}>QUIT</Text>
-            </TouchableOpacity>
-        </View>
+            {/* Apply the current color based on the color index */}
+            <Text style={[styles.title, { color: colors[colorIndex] }]}>Snake Game</Text><TouchableOpacity
+                style={[
+                    styles.button,
+                    highlightedButton === "PLAY" && styles.highlightedButton,
+                ]}
+                onPress={() => navigation.navigate("Game")}
+            ><Text style={styles.buttonText}>PLAY</Text></TouchableOpacity><TouchableOpacity
+                style={[
+                    styles.button,
+                    highlightedButton === "QUIT" && styles.highlightedButton,
+                ]}
+                onPress={handleQuit}
+            ><Text style={styles.buttonText}>QUIT</Text></TouchableOpacity></View>
     );
 };
 
-// Styles for the MainMenu component
+// Define styles for the game UI
 const styles = StyleSheet.create({
+    // Style for the main container
     container: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: "#000", // Black background for a game-like feel
+        flex: 1, // Makes the container take up the full screen
+        justifyContent: "center", // Centers content vertically
+        alignItems: "center", // Centers content horizontally
+        backgroundColor: "green", // Sets the background color
     },
+    // Style for the title text
     title: {
-        fontSize: 32,
-        fontWeight: "bold",
-        color: "white",
-        marginBottom: 40, // Space between title and buttons
+        fontSize: 45, // Sets the font size to 45
+        fontWeight: "bold", // Makes the font bold
+        marginBottom: 40, // Adds a bottom margin of 40
     },
+    // Style for the buttons
     button: {
-        backgroundColor: "#1E90FF", // Blue color for buttons
-        paddingVertical: 15, // Vertical padding for better touch area
-        paddingHorizontal: 40, // Horizontal padding for button width
-        borderRadius: 10, // Rounded corners
-        marginVertical: 10, // Spacing between buttons
+        backgroundColor: "red", // Sets the button background color to DodgerBlue
+        paddingVertical: 15, // Adds vertical padding of 15
+        paddingHorizontal: 40, // Adds horizontal padding of 40
+        borderRadius: 10, // Rounds the corners with a radius of 10
+        marginVertical: 10, // Adds vertical margin of 10
     },
+    // Style for the text inside the buttons
     buttonText: {
-        fontSize: 20,
-        color: "white",
-        fontWeight: "bold",
+        fontSize: 20, // Sets the font size to 20
+        color: "white", // Sets the text color to white
+        fontWeight: "bold", // Makes the font bold
+    },
+    // Style for the highlighted button
+    highlightedButton: {
+        backgroundColor: "purple", // Sets the highlighted button background color
     },
 });
 
-// Export the MainMenu component for use in the app
 export default MainMenu;
