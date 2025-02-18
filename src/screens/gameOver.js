@@ -21,52 +21,52 @@ const GameOver = ({ score, onRestart, onQuit }) => {
             <Text style={styles.scoreText}>YOUR SCORE: {score}</Text>
 
             {/* Restart Button */}
-            <TouchableOpacity style={styles.button} onPress={onRestart}>
-                <Text style={styles.buttonText}>RESTART</Text>
-            </TouchableOpacity>
+            <TouchableOpacity style={styles.button} onPress={onRestart}><Text style={styles.buttonText}>RESTART</Text></TouchableOpacity>
 
             {/* Quit Button with confirmation alert */}
-            <TouchableOpacity style={styles.button} onPress={handleQuit}>
-                <Text style={styles.buttonText}>QUIT</Text>
-            </TouchableOpacity>
-        </View>
+            <TouchableOpacity style={styles.button} onPress={handleQuit}><Text style={styles.buttonText}>QUIT</Text></TouchableOpacity></View>
     );
 };
 
 // Styles for GameOver Screen
 const styles = StyleSheet.create({
+    // Style for the Game Over screen container
     gameOverScreen: {
-        position: "absolute",
+        position: "absolute", // Position it absolutely over the parent component
         top: 0,
         left: 0,
         right: 0,
         bottom: 0,
-        backgroundColor: "rgba(0, 0, 0, 0.8)",
-        justifyContent: "center",
-        alignItems: "center",
-        zIndex: 1,
+        backgroundColor: "rgba(0, 0, 0, 0.8)", // Semi-transparent black background
+        justifyContent: "center", // Center content vertically
+        alignItems: "center", // Center content horizontally
+        zIndex: 1, // Ensure it is on top of other elements
     },
+    // Style for the Game Over text
     gameOverText: {
-        fontSize: 40,
-        color: "white",
-        marginBottom: 20,
+        fontSize: 40, // Large font size
+        color: "white", // White text color
+        marginBottom: 20, // Margin below the text
     },
+    // Style for the score text
     scoreText: {
-        fontSize: 30,
-        color: "white",
-        marginBottom: 40,
+        fontSize: 30, // Slightly smaller font size
+        color: "white", // White text color
+        marginBottom: 40, // Larger margin below the text
     },
+    // Style for the buttons
     button: {
-        backgroundColor: "#1E90FF",
-        paddingVertical: 15,
-        paddingHorizontal: 40,
-        borderRadius: 10,
-        marginVertical: 10,
+        backgroundColor: "#1E90FF", // DodgerBlue background color
+        paddingVertical: 15, // Vertical padding
+        paddingHorizontal: 40, // Horizontal padding
+        borderRadius: 10, // Rounded corners
+        marginVertical: 10, // Vertical margin between buttons
     },
+    // Style for the text inside the buttons
     buttonText: {
-        fontSize: 20,
-        color: "white",
-        fontWeight: "bold",
+        fontSize: 20, // Font size
+        color: "white", // White text color
+        fontWeight: "bold", // Bold text
     },
 });
 
