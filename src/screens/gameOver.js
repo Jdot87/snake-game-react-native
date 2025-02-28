@@ -1,8 +1,14 @@
-import React from "react";
-import { View, Text, TouchableOpacity, StyleSheet, Alert } from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, Text, TouchableOpacity, StyleSheet, Alert, Image } from "react-native";
 
 // GameOver component
 const GameOver = ({ score, onRestart, onQuit }) => {
+    // manage the color index for Game Over
+    const [colorIndex, setColorIndex] = useState(0);
+    const colors = ["red", "white"];
+
+    // manage which button is highlighted
+    const [highlightedButton, setHighlightedButton] = useState("RESTART");
 
     // Function to handle Quit button with confirmation alert
     const handleQuit = () => {
@@ -12,61 +18,101 @@ const GameOver = ({ score, onRestart, onQuit }) => {
         ]);
     };
 
+    // Effect to cycle through the colors for the game over text at regular intervals
+    useEffect(() => {
+        const colorInterval = setInterval(() => {
+            setColorIndex((prevIndex) => (prevIndex + 1) % colors.length);
+        }, 200); // Change the interval duration as needed (200ms for quick flashing)
+
+        // Clean up the interval on component unmount
+        return () => clearInterval(colorInterval);
+    }, []);
+
+    // Effect to toggle the highlighted button at regular intervals
+    useEffect(() => {
+        const buttonInterval = setInterval(() => {
+            setHighlightedButton((prev) => (prev === "RESTART" ? "QUIT" : "RESTART"));
+        }, 400); // Change the interval duration as needed (400ms for button flashing)
+
+        // Clean up the interval on component unmount
+        return () => clearInterval(buttonInterval);
+    }, []);
+
     return (
         <View style={styles.gameOverScreen}>
             {/* Display Game Over message */}
-            <Text style={styles.gameOverText}>GAME OVER</Text>
-
+            <Text style={[styles.gameOverText, { color: colors[colorIndex] }]}>GAME OVER</Text>
+        <Image
+                source={require("../assets/mainMenuImage.jpg")} // image path (ensure you have the correct image path)
+                style={styles.menuImage}
+            />
+          
             {/* Display the score */}
             <Text style={styles.scoreText}>YOUR SCORE: {score}</Text>
 
             {/* Restart Button */}
-            <TouchableOpacity style={styles.button} onPress={onRestart}><Text style={styles.buttonText}>RESTART</Text></TouchableOpacity>
+            <TouchableOpacity
+                style={[
+                    styles.button,
+                    highlightedButton === "RESTART" && styles.highlightedButton,
+                ]}
+                onPress={onRestart}
+            ><Text style={styles.buttonText}>RESTART</Text></TouchableOpacity>
 
             {/* Quit Button with confirmation alert */}
-            <TouchableOpacity style={styles.button} onPress={handleQuit}><Text style={styles.buttonText}>QUIT</Text></TouchableOpacity></View>
+            <TouchableOpacity
+                style={[
+                    styles.button,
+                    highlightedButton === "QUIT" && styles.highlightedButton,
+                ]}
+                onPress={handleQuit}
+            ><Text style={styles.buttonText}>QUIT</Text></TouchableOpacity></View>
     );
 };
 
 // Styles for GameOver Screen
 const styles = StyleSheet.create({
-    // Style for the Game Over screen container
     gameOverScreen: {
-        position: "absolute", // Position it absolutely over the parent component
+        position: "absolute",
         top: 0,
         left: 0,
         right: 0,
         bottom: 0,
-        backgroundColor: "rgba(0, 0, 0, 0.8)", // Semi-transparent black background
-        justifyContent: "center", // Center content vertically
-        alignItems: "center", // Center content horizontally
-        zIndex: 1, // Ensure it is on top of other elements
+        backgroundColor: "rgba(0, 0, 0, 0.8)",
+        justifyContent: "center",
+        alignItems: "center",
+        zIndex: 1,
     },
-    // Style for the Game Over text
     gameOverText: {
-        fontSize: 40, // Large font size
-        color: "white", // White text color
-        marginBottom: 20, // Margin below the text
+        justifyContent: "top",
+        fontSize: 40,
+        marginBottom: 30,
     },
-    // Style for the score text
     scoreText: {
-        fontSize: 30, // Slightly smaller font size
-        color: "white", // White text color
-        marginBottom: 40, // Larger margin below the text
+        fontSize: 30,
+        color: "white",
+        marginBottom: 40,
     },
-    // Style for the buttons
     button: {
-        backgroundColor: "#1E90FF", // DodgerBlue background color
-        paddingVertical: 15, // Vertical padding
-        paddingHorizontal: 40, // Horizontal padding
-        borderRadius: 10, // Rounded corners
-        marginVertical: 10, // Vertical margin between buttons
+        backgroundColor: "#1E90FF",
+        paddingVertical: 15,
+        paddingHorizontal: 40,
+        borderRadius: 10,
+        marginVertical: 10,
     },
-    // Style for the text inside the buttons
     buttonText: {
-        fontSize: 20, // Font size
-        color: "white", // White text color
-        fontWeight: "bold", // Bold text
+        fontSize: 20,
+        color: "white",
+        fontWeight: "bold",
+    },
+    // Style for the highlighted button
+    highlightedButton: {
+        backgroundColor: "red", // Sets the highlighted button background color
+    },
+    menuImage: {
+        width: 400,
+        height: 350,      
+        resizeMode: "contain", // Ensures the image is contained within the given size
     },
 });
 
